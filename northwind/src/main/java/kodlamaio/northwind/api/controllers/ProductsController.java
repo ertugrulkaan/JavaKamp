@@ -24,7 +24,7 @@ public class ProductsController {
 	@GetMapping("/getall")
 	public List<Product> getall(){
 		return this.productService.getAll();
-	}
+	};
 	
 	
 }
