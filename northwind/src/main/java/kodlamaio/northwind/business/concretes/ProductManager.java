@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlamaio.northwind.business.abstracts.ProductService;
+import kodlamaio.northwind.core.utilities.results.DataResult;
+import kodlamaio.northwind.core.utilities.results.ErrorDataResult;
+import kodlamaio.northwind.core.utilities.results.Result;
+import kodlamaio.northwind.core.utilities.results.SuccessDataResult;
+import kodlamaio.northwind.core.utilities.results.SuccessResult;
 import kodlamaio.northwind.dataAccess.abstracts.ProductDao;
 import kodlamaio.northwind.entities.concretes.Product;
 
@@ -20,14 +25,21 @@ public class ProductManager implements ProductService{
 		this.productDao = productDao;
 	}
 	@Override
-	public List<Product> getAll() {
-		// TODO Auto-generated method stub
-		return this.productDao.findAll();
+	public DataResult<List<Product>> getAll() {
+		return new SuccessDataResult<List<Product>>(this.productDao.findAll(),"Basarili");
 	}
 	@Override
-	public Product getByName(String productName) {
-		// TODO Auto-generated method stub
-		return null;
+	public DataResult<Product> getById(int id) {
+		Product data = this.productDao.findById(id).get();
+		if (data!=null) {
+			return new SuccessDataResult<Product>(data,"Basarili");
+		}
+		return new ErrorDataResult<Product>("Urun Bulunamadi");
+	}
+	@Override
+	public Result add(Product product) {
+		this.productDao.save(product);
+		return new SuccessResult("Basarili");
 	}
 
 }
